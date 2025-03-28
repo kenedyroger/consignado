@@ -1,3 +1,5 @@
+using Domain;
+
 namespace Unit.Domain;
 
 [TestClass]
@@ -78,55 +80,4 @@ public class ProponenteTests
         decimal rendimentoInvalido = 0m;
         Assert.ThrowsException<ArgumentException>(() => proponente.ValorRendimento = rendimentoInvalido);
     }
-}
-
-class Proponente
-{
-    private decimal _valorRendimento;
-    public Proponente(string nome, DateOnly dataNascimento, string numeroIdPrevidenciaSocial, Endereco enderecoResidencial, decimal valorRendimento)
-    {
-
-        this.Nome = nome;
-        this.DataNascimento = dataNascimento;
-        this.NumeroIdPrevidenciaSocial = numeroIdPrevidenciaSocial;
-        this.EnderecoResidencial = enderecoResidencial;
-
-        if (valorRendimento <= 0m)
-            throw new ArgumentException("Proponente precisa ter valor de rendimento maior do que Zero");
-        this._valorRendimento = valorRendimento;
-    }
-    public string Nome { get; set; }
-    public DateOnly DataNascimento { get; set; }
-    public string NumeroIdPrevidenciaSocial { get; private set; }
-    public Endereco EnderecoResidencial { get; private set; }
-    public decimal ValorRendimento
-    {
-        get { return _valorRendimento; }
-        set
-        {
-            if (value <= 0m)
-                throw new ArgumentException("Proponente precisa ter valor de rendimento maior do que Zero");
-            this._valorRendimento = value;
-        }
-    }
-}
-
-public class Endereco
-{
-    public Endereco(string rua, string numero, string bairro, string cidade, string estado, string cep)
-    {
-        this.Rua = rua;
-        this.Numero = numero;
-        this.Bairro = bairro;
-        this.Cidade = cidade;
-        this.Estado = estado;
-        this.CEP = cep;
-    }
-
-    public string Rua { get; private set; }
-    public string Numero { get; private set; }
-    public string Bairro { get; private set; }
-    public string Cidade { get; private set; }
-    public string Estado { get; private set; }
-    public string CEP { get; private set; }
 }
