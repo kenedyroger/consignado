@@ -8,7 +8,10 @@ public class ProponenteTests
     [TestInitialize]
     public void Setup()
     {
-        _sut = new Proponente("fulano de tal", new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day));
+        string nome = "fulano de tal";
+        DateOnly dataNascimento = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+        string numeroIdPrevidenciaSocial = "1234";
+        _sut = new Proponente(nome, dataNascimento, numeroIdPrevidenciaSocial);
     }
 
     [TestMethod]
@@ -20,21 +23,31 @@ public class ProponenteTests
     }
 
     [TestMethod]
-    public void Nao_deve_criar_proponente_data_nascimento()
+    public void Nao_deve_criar_proponente_sem_data_nascimento()
     {
         var proponente = _sut;
         Assert.IsNotNull(proponente.DataNascimento);
     }
 
+    [TestMethod]
+    public void Nao_deve_criar_proponente_sem_numero_previdencia_social()
+    {
+        var proponente = _sut;
+        Assert.IsNotNull(proponente.NumeroIdPrevidenciaSocial);
+        Assert.IsFalse(string.IsNullOrEmpty(_sut.NumeroIdPrevidenciaSocial));
+    }
 }
 
 class Proponente
 {
-    public Proponente(string nome, DateOnly dataNascimento)
+    public Proponente(string nome, DateOnly dataNascimento, string numeroIdPrevidenciaSocial)
     {
         this.Nome = nome;
         this.DataNascimento = dataNascimento;
+        this.NumeroIdPrevidenciaSocial = numeroIdPrevidenciaSocial;
     }
     public string Nome { get; set; }
     public DateOnly DataNascimento { get; set; }
+    public string NumeroIdPrevidenciaSocial { get; private set; }
+
 }
