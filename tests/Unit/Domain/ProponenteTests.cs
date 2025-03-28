@@ -21,7 +21,9 @@ public class ProponenteTests
 
         Endereco enderecoProponente = new Endereco(rua, numeroResidencial, bairro, cidade, estado, cep);
 
-        _sut = new Proponente(nome, dataNascimento, numeroIdPrevidenciaSocial, enderecoProponente);
+        decimal valorRendimento = 0.1m;
+
+        _sut = new Proponente(nome, dataNascimento, numeroIdPrevidenciaSocial, enderecoProponente, valorRendimento);
     }
 
     [TestMethod]
@@ -66,21 +68,47 @@ public class ProponenteTests
         Assert.IsFalse(string.IsNullOrEmpty(proponente.EnderecoResidencial.CEP));
     }
 
+    [TestMethod]
+    public void Nao_deve_criar_proponente_sem_informar_os_rendimentos()
+    {
+        var proponente = _sut;
+        Assert.IsNotNull(proponente.ValorRendimento);
+        Assert.IsTrue(proponente.ValorRendimento > 0m);
+
+        decimal rendimentoInvalido = 0m;
+        Assert.ThrowsException<ArgumentException>(() => proponente.ValorRendimento = rendimentoInvalido);
+    }
 }
 
 class Proponente
 {
-    public Proponente(string nome, DateOnly dataNascimento, string numeroIdPrevidenciaSocial, Endereco enderecoResidencial)
+    private decimal _valorRendimento;
+    public Proponente(string nome, DateOnly dataNascimento, string numeroIdPrevidenciaSocial, Endereco enderecoResidencial, decimal valorRendimento)
     {
+
         this.Nome = nome;
         this.DataNascimento = dataNascimento;
         this.NumeroIdPrevidenciaSocial = numeroIdPrevidenciaSocial;
         this.EnderecoResidencial = enderecoResidencial;
+
+        if (valorRendimento <= 0m)
+            throw new ArgumentException("Proponente precisa ter valor de rendimento maior do que Zero");
+        this._valorRendimento = valorRendimento;
     }
     public string Nome { get; set; }
     public DateOnly DataNascimento { get; set; }
     public string NumeroIdPrevidenciaSocial { get; private set; }
     public Endereco EnderecoResidencial { get; private set; }
+    public decimal ValorRendimento
+    {
+        get { return _valorRendimento; }
+        set
+        {
+            if (value <= 0m)
+                throw new ArgumentException("Proponente precisa ter valor de rendimento maior do que Zero");
+            this._valorRendimento = value;
+        }
+    }
 }
 
 public class Endereco
