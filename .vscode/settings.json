@@ -1,3 +1,7 @@
 {
-    "dotnet.defaultSolution": "Consignado.sln"
+    "dotnet.defaultSolution": "Consignado.sln",
+    "cSpell.words": [
+        "endereco",
+        "Previdencia"
+    ]
 }
